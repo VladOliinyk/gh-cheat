@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <children>
+      <ImageView fitHeight="500.0" fitWidth="700.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@img/bg.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="greenButton" fitHeight="35.0" fitWidth="27.0" layoutX="493.0" layoutY="241.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@img/button-green-0.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="redButton" fitHeight="35.0" fitWidth="27.0" layoutX="466.0" layoutY="241.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@img/button-red-0.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="yellowButton" fitHeight="35.0" fitWidth="27.0" layoutX="439.0" layoutY="241.0"  pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@img/button-yellow-0.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="blueButton" fitHeight="35.0" fitWidth="27.0" layoutX="412.0" layoutY="241.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@img/button-blue-0.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="orangeButton" fitHeight="35.0" fitWidth="27.0" layoutX="385.0" layoutY="241.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@img/button-orange-0.png" />
+         </image>
+      </ImageView>
+   </children>
+</Pane>
