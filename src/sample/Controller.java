@@ -9,7 +9,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 
 import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.*;
+
+import static javafx.scene.input.MouseEvent.*;
 
 
 public class Controller implements Initializable, EventHandler<MouseEvent> {
@@ -26,85 +28,109 @@ public class Controller implements Initializable, EventHandler<MouseEvent> {
     ImageView orangeButton;
 
     @FXML
-    static Text coordsLabel;
-
+    Text greenCoordLayer;
     @FXML
-    Text colorLabel;
-
+    Text redCoordLayer;
     @FXML
-    ImageView myBg;
-
-
+    Text yellowCoordLayer;
+    @FXML
+    Text blueCoordLayer;
+    @FXML
+    Text orangeCoordLayer;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        myBg.addEventHandler(MouseEvent.MOUSE_MOVED, this);
-        greenButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this);
-        redButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this);
-        yellowButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this);
-        blueButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this);
-        orangeButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this);
+        greenButton.addEventHandler(MOUSE_CLICKED, this);
+        redButton.addEventHandler(MOUSE_CLICKED, this);
+        yellowButton.addEventHandler(MOUSE_CLICKED, this);
+        blueButton.addEventHandler(MOUSE_CLICKED, this);
+        orangeButton.addEventHandler(MOUSE_CLICKED, this);
     }
 
-    @Override
-    public void handle(MouseEvent event) {
-
-        ImageView source = (ImageView) event.getSource();
-        String id = source.getId();
-        switch (source.getId()) {
-            case "greenButton":
-                greenButtonPressed();
-                break;
-            case "redButton":
-                redButtonPressed();
-                break;
-            case "yellowButton":
-                yellowButtonPressed();
-                break;
-            case "blueButton":
-                blueButtonPressed();
-                break;
-            case "orangeButton":
-                orangeButtonPressed();
-                break;
-        }
-    }
+    private int greenX = 0;
+    private int greenY = 0;
+    private int redX = 0;
+    private int redY = 0;
+    private int yellowX = 0;
+    private int yellowY = 0;
+    private int blueX = 0;
+    private int blueY = 0;
+    private int orangeX = 0;
+    private int orangeY = 0;
 
 
     Watcher myWatcher;
+    private int CURRENT_BUTTON = 0;
 
-    public static int greenX;
-    public static int greenY;
-
-    private void greenButtonPressed() {
-        System.out.println("greenButtonPressed");
+    @Override
+    public void handle(MouseEvent event) {
+        animationTimer.start();
+        ImageView source = (ImageView) event.getSource();
+        String colorButtonId = source.getId();
+        switch (colorButtonId) {
+            case "greenButton":
+                CURRENT_BUTTON = 1;
+                break;
+            case "redButton":
+                CURRENT_BUTTON = 2;
+                break;
+            case "yellowButton":
+                CURRENT_BUTTON = 3;
+                break;
+            case "blueButton":
+                CURRENT_BUTTON = 4;
+                break;
+            case "orangeButton":
+                CURRENT_BUTTON = 5;
+                break;
+        }
         if (myWatcher == null || !myWatcher.isWatching()) {
-            colorLabel.setText("green");
-            System.out.println("TRUE");
-            myWatcher = new Watcher(1);
+            myWatcher = new Watcher(CURRENT_BUTTON);
             myWatcher.start();
         }
     }
 
-    private void redButtonPressed() {
-        colorLabel.setText("red");
-        System.out.println("redButtonPressed");
+    private AnimationTimer animationTimer = new AnimationTimer() {
+        @Override
+        public void handle(long now) {
+            System.out.println("Coords:\n" +
+                    "     Green=" + greenX + ":" + greenY +
+                    "     Red=" + redX + ":" + redY +
+                    "     Yellow=" + yellowX + ":" + yellowY +
+                    "     Blue=" + blueX + ":" + blueY +
+                    "     Orange=" + orangeX + ":" + orangeY);
+            updateCoordLables();
+        }
+    };
 
+    private void updateCoordLables() {
+        switch (CURRENT_BUTTON) {
+            case 1:
+                greenX = myWatcher.getX();
+                greenY = myWatcher.getY();
+                greenCoordLayer.setText(greenX+":"+greenY);
+                break;
+            case 2:
+                redX = myWatcher.getX();
+                redY = myWatcher.getY();
+                redCoordLayer.setText(redX+":"+redY);
+                break;
+            case 3:
+                yellowX = myWatcher.getX();
+                yellowY = myWatcher.getY();
+                yellowCoordLayer.setText(yellowX+":"+yellowY);
+                break;
+            case 4:
+                blueX = myWatcher.getX();
+                blueY = myWatcher.getY();
+                blueCoordLayer.setText(blueX+":"+blueY);
+                break;
+            case 5:
+                orangeX = myWatcher.getX();
+                orangeY = myWatcher.getY();
+                orangeCoordLayer.setText(orangeX+":"+orangeY);
+                break;
+
+        }
     }
-
-    private void yellowButtonPressed() {
-        colorLabel.setText("yellow");
-        System.out.println("yellowButtonPressed");
-    }
-
-    private void blueButtonPressed() {
-        colorLabel.setText("blue");
-        System.out.println("blueButtonPressed");
-    }
-
-    private void orangeButtonPressed() {
-        colorLabel.setText("orange");
-        System.out.println("orangeButtonPressed");
-    }
-
 }

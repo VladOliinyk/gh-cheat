@@ -49,11 +49,6 @@ public class Watcher extends Thread {
                 if (xArray[0] == xArray[1] && xArray[0] == xArray[2] && yArray[0] == yArray[1] && yArray[0] == yArray[2]) {
                     hackX = xArray[0];
                     hackY = yArray[0];
-                    if (currentButton == 1) {
-                        Controller.greenX = hackX;
-                        Controller.greenY = hackY;
-                        // Controller.coordsLabel.setText(hackX+":"+hackY);
-                    }
                     closeEyes();
                 } else {
                     xArray[0] = xArray[1];
