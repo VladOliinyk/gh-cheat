@@ -1,13 +1,18 @@
 package sample;
 
 import javafx.animation.AnimationTimer;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
+import java.awt.*;
 import java.net.URL;
 import java.util.*;
 
@@ -15,6 +20,7 @@ import static javafx.scene.input.MouseEvent.*;
 
 
 public class Controller implements Initializable, EventHandler<MouseEvent> {
+
 
     @FXML
     ImageView greenButton;
@@ -29,6 +35,7 @@ public class Controller implements Initializable, EventHandler<MouseEvent> {
 
     @FXML
     Text greenCoordLayer;
+
     @FXML
     Text redCoordLayer;
     @FXML
@@ -38,17 +45,16 @@ public class Controller implements Initializable, EventHandler<MouseEvent> {
     @FXML
     Text orangeCoordLayer;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        greenButton.addEventHandler(MOUSE_CLICKED, this);
-        redButton.addEventHandler(MOUSE_CLICKED, this);
-        yellowButton.addEventHandler(MOUSE_CLICKED, this);
-        blueButton.addEventHandler(MOUSE_CLICKED, this);
-        orangeButton.addEventHandler(MOUSE_CLICKED, this);
+    @FXML
+    Button rockButton;
+
+    public Controller() throws AWTException {
     }
 
     private int greenX = 0;
+
     private int greenY = 0;
+
     private int redX = 0;
     private int redY = 0;
     private int yellowX = 0;
@@ -58,9 +64,40 @@ public class Controller implements Initializable, EventHandler<MouseEvent> {
     private int orangeX = 0;
     private int orangeY = 0;
 
-
     Watcher myWatcher;
     private int CURRENT_BUTTON = 0;
+
+    KeyPresser greenKeyPresser = new KeyPresser();
+    KeyPresser redKeyPresser = new KeyPresser();
+    KeyPresser yellowKeyPresser = new KeyPresser();
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        greenButton.addEventHandler(MOUSE_CLICKED, this);
+        redButton.addEventHandler(MOUSE_CLICKED, this);
+        yellowButton.addEventHandler(MOUSE_CLICKED, this);
+        blueButton.addEventHandler(MOUSE_CLICKED, this);
+        orangeButton.addEventHandler(MOUSE_CLICKED, this);
+
+        rockButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                System.out.println("LETS GET DIS PARTY STARTED");
+
+                greenKeyPresser.setButton(1, greenX, greenY);
+                greenKeyPresser.start();
+
+                redKeyPresser.setButton(2, redX, redY);
+                redKeyPresser.start();
+
+                yellowKeyPresser.setButton(3, yellowX, yellowY);
+                yellowKeyPresser.start();
+
+                myWatcher.closeEyes();
+            }
+        });
+
+    }
 
     @Override
     public void handle(MouseEvent event) {
@@ -93,12 +130,6 @@ public class Controller implements Initializable, EventHandler<MouseEvent> {
     private AnimationTimer animationTimer = new AnimationTimer() {
         @Override
         public void handle(long now) {
-            System.out.println("Coords:\n" +
-                    "     Green=" + greenX + ":" + greenY +
-                    "     Red=" + redX + ":" + redY +
-                    "     Yellow=" + yellowX + ":" + yellowY +
-                    "     Blue=" + blueX + ":" + blueY +
-                    "     Orange=" + orangeX + ":" + orangeY);
             updateCoordLables();
         }
     };
@@ -133,4 +164,5 @@ public class Controller implements Initializable, EventHandler<MouseEvent> {
 
         }
     }
+
 }

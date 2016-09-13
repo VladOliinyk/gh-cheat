@@ -59,15 +59,6 @@ public class Watcher extends Thread {
                     yArray[2] = Y;
                 }
 
-                System.out.println( "\n" +
-                        "x=" + xArray[0] + " y=" + yArray[0] + "\n" +
-                        "x=" + xArray[1] + " y=" + yArray[1] + "\n" +
-                        "x=" + xArray[2] + " y=" + yArray[2]);
-
-
-                //Robot robot = new Robot();
-                //Color colorXY = robot.getPixelColor(X, Y);
-                //System.out.println(X + ":" + Y + " - " + colorXY);
 
                 Thread.sleep(500);
             } catch (InterruptedException e) {}
