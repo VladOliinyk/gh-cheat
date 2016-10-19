@@ -5,11 +5,9 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
 import java.awt.*;
@@ -48,28 +46,22 @@ public class Controller implements Initializable, EventHandler<MouseEvent> {
     @FXML
     Button rockButton;
 
+    private static int[] buttonXY = {   0, 0,   //  0 1   greenX, greenY
+                                        0, 0,   //  2 3   redX, redY
+                                        0, 0,   //  4 5   yellowX, yellowY
+                                        0, 0,   //  6 7   blueX, blueY
+                                        0, 0};  //  8 9   orangeX, orangeY
+
     public Controller() throws AWTException {
     }
 
-    private int greenX = 0;
-
-    private int greenY = 0;
-
-    private int redX = 0;
-    private int redY = 0;
-    private int yellowX = 0;
-    private int yellowY = 0;
-    private int blueX = 0;
-    private int blueY = 0;
-    private int orangeX = 0;
-    private int orangeY = 0;
+    public static int[] getButtonXY() {
+        return buttonXY;
+    }
 
     Watcher myWatcher;
     private int CURRENT_BUTTON = 0;
-
-    KeyPresser greenKeyPresser = new KeyPresser();
-    KeyPresser redKeyPresser = new KeyPresser();
-    KeyPresser yellowKeyPresser = new KeyPresser();
+    UltimateKeyPresser ultimateKeyPresser = new UltimateKeyPresser();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -84,14 +76,7 @@ public class Controller implements Initializable, EventHandler<MouseEvent> {
             public void handle(ActionEvent e) {
                 System.out.println("LETS GET DIS PARTY STARTED");
 
-                greenKeyPresser.setButton(1, greenX, greenY);
-                greenKeyPresser.start();
-
-                redKeyPresser.setButton(2, redX, redY);
-                redKeyPresser.start();
-
-                yellowKeyPresser.setButton(3, yellowX, yellowY);
-                yellowKeyPresser.start();
+                ultimateKeyPresser.start();
 
                 myWatcher.closeEyes();
             }
@@ -137,29 +122,29 @@ public class Controller implements Initializable, EventHandler<MouseEvent> {
     private void updateCoordLables() {
         switch (CURRENT_BUTTON) {
             case 1:
-                greenX = myWatcher.getX();
-                greenY = myWatcher.getY();
-                greenCoordLayer.setText(greenX+":"+greenY);
+                buttonXY[0] = myWatcher.getX();
+                buttonXY[1] = myWatcher.getY();
+                greenCoordLayer.setText(buttonXY[0]+":"+buttonXY[1]);
                 break;
             case 2:
-                redX = myWatcher.getX();
-                redY = myWatcher.getY();
-                redCoordLayer.setText(redX+":"+redY);
+                buttonXY[2] = myWatcher.getX();
+                buttonXY[3] = myWatcher.getY();
+                redCoordLayer.setText(buttonXY[2]+":"+buttonXY[3]);
                 break;
             case 3:
-                yellowX = myWatcher.getX();
-                yellowY = myWatcher.getY();
-                yellowCoordLayer.setText(yellowX+":"+yellowY);
+                buttonXY[4] = myWatcher.getX();
+                buttonXY[5] = myWatcher.getY();
+                yellowCoordLayer.setText(buttonXY[4]+":"+buttonXY[5]);
                 break;
             case 4:
-                blueX = myWatcher.getX();
-                blueY = myWatcher.getY();
-                blueCoordLayer.setText(blueX+":"+blueY);
+                buttonXY[6] = myWatcher.getX();
+                buttonXY[7] = myWatcher.getY();
+                blueCoordLayer.setText(buttonXY[6]+":"+buttonXY[7]);
                 break;
             case 5:
-                orangeX = myWatcher.getX();
-                orangeY = myWatcher.getY();
-                orangeCoordLayer.setText(orangeX+":"+orangeY);
+                buttonXY[8] = myWatcher.getX();
+                buttonXY[9] = myWatcher.getY();
+                orangeCoordLayer.setText(buttonXY[8]+":"+buttonXY[9]);
                 break;
 
         }
