@@ -5,12 +5,18 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.ImageCursor;
 import javafx.scene.control.Button;
-import javafx.scene.image.ImageView;
+import javafx.scene.image.*;
+
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
+
 import java.awt.*;
+
 import java.net.URL;
 import java.util.*;
 
@@ -19,6 +25,8 @@ import static javafx.scene.input.MouseEvent.*;
 
 public class Controller implements Initializable, EventHandler<MouseEvent> {
 
+    @FXML
+    Pane pane;
 
     @FXML
     ImageView greenButton;
@@ -109,6 +117,7 @@ public class Controller implements Initializable, EventHandler<MouseEvent> {
         if (myWatcher == null || !myWatcher.isWatching()) {
             myWatcher = new Watcher(CURRENT_BUTTON);
             myWatcher.start();
+
         }
     }
 
@@ -135,6 +144,7 @@ public class Controller implements Initializable, EventHandler<MouseEvent> {
                 buttonXY[4] = myWatcher.getX();
                 buttonXY[5] = myWatcher.getY();
                 yellowCoordLayer.setText(buttonXY[4]+":"+buttonXY[5]);
+                setOtherButtonCoords();
                 break;
             case 4:
                 buttonXY[6] = myWatcher.getX();
@@ -149,5 +159,36 @@ public class Controller implements Initializable, EventHandler<MouseEvent> {
 
         }
     }
+
+    private void setOtherButtonCoords() {
+        int x = myWatcher.getX();
+        int y = myWatcher.getY();
+
+        //green
+        buttonXY[0] = x-125;
+        buttonXY[1] = y-110;
+        greenCoordLayer.setText(buttonXY[0]+":"+buttonXY[1]);
+
+        //red
+        buttonXY[2] = x-60;
+        buttonXY[3] = y-110;
+        redCoordLayer.setText(buttonXY[2]+":"+buttonXY[3]);
+
+        //yellow
+        buttonXY[4] = x;
+        buttonXY[5] = y-110;
+        yellowCoordLayer.setText(buttonXY[4]+":"+buttonXY[5]);
+
+        //blue
+        buttonXY[6] = x+65;
+        buttonXY[7] = y-110;
+        blueCoordLayer.setText(buttonXY[6]+":"+buttonXY[7]);
+
+        //orange
+        buttonXY[8] = x+130;
+        buttonXY[9] = y-110;
+        orangeCoordLayer.setText(buttonXY[8]+":"+buttonXY[9]);
+    }
+
 
 }
