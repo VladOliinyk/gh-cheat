@@ -1,194 +1,189 @@
 package sample;
 
-import javafx.animation.AnimationTimer;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.ImageCursor;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.image.*;
-
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
-
 import java.awt.*;
-
-import java.net.URL;
-import java.util.*;
-
-import static javafx.scene.input.MouseEvent.*;
+import java.util.Objects;
 
 
-public class Controller implements Initializable, EventHandler<MouseEvent> {
+public class Controller {
 
     @FXML
-    Pane pane;
+    private Pane myPane;
 
     @FXML
-    ImageView greenButton;
-    @FXML
-    ImageView redButton;
-    @FXML
-    ImageView yellowButton;
-    @FXML
-    ImageView blueButton;
-    @FXML
-    ImageView orangeButton;
+    private Button buttonRock;
 
     @FXML
-    Text greenCoordLayer;
+    private Button buttonHelp;
 
     @FXML
-    Text redCoordLayer;
-    @FXML
-    Text yellowCoordLayer;
-    @FXML
-    Text blueCoordLayer;
-    @FXML
-    Text orangeCoordLayer;
+    private Button buttonStop;
 
     @FXML
-    Button rockButton;
+    private Button buttonSetupGamearea;
 
-    private static int[] buttonXY = {   0, 0,   //  0 1   greenX, greenY
-                                        0, 0,   //  2 3   redX, redY
-                                        0, 0,   //  4 5   yellowX, yellowY
-                                        0, 0,   //  6 7   blueX, blueY
-                                        0, 0};  //  8 9   orangeX, orangeY
+    @FXML
+    private Text coordsLabel;
 
-    public Controller() throws AWTException {
-    }
 
-    public static int[] getButtonXY() {
-        return buttonXY;
-    }
+    @FXML
+    public void initialize() {
 
-    Watcher myWatcher;
-    private int CURRENT_BUTTON = 0;
-    UltimateKeyPresser ultimateKeyPresser = new UltimateKeyPresser();
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        greenButton.addEventHandler(MOUSE_CLICKED, this);
-        redButton.addEventHandler(MOUSE_CLICKED, this);
-        yellowButton.addEventHandler(MOUSE_CLICKED, this);
-        blueButton.addEventHandler(MOUSE_CLICKED, this);
-        orangeButton.addEventHandler(MOUSE_CLICKED, this);
-
-        rockButton.setOnAction(new EventHandler<ActionEvent>() {
+        buttonRock.setDisable(true);
+        buttonStop.setDisable(true);
+        buttonSetupGamearea.setDisable(false);
+        buttonRock.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
-            public void handle(ActionEvent e) {
-                System.out.println("LETS GET DIS PARTY STARTED");
+            public void handle(MouseEvent mouseEvent) {
+                // type something here or go to onClickMethod
+            }
+        });
+        //buttonStop.setDisable(true);
+        buttonStop.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                // type something here or go to onClickMethod
+            }
+        });
 
-                ultimateKeyPresser.start();
+        buttonHelp.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                try {
+                    String switchScene = "./helpScene.fxml";
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.setLocation(getClass().getResource(switchScene));
+                    Parent widget = loader.load();
+                    myPane.getChildren().clear();
+                    myPane.getChildren().add(widget);
 
-                myWatcher.closeEyes();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
         });
 
     }
 
-    @Override
-    public void handle(MouseEvent event) {
-        animationTimer.start();
-        ImageView source = (ImageView) event.getSource();
-        String colorButtonId = source.getId();
-        switch (colorButtonId) {
-            case "greenButton":
-                CURRENT_BUTTON = 1;
-                break;
-            case "redButton":
-                CURRENT_BUTTON = 2;
-                break;
-            case "yellowButton":
-                CURRENT_BUTTON = 3;
-                break;
-            case "blueButton":
-                CURRENT_BUTTON = 4;
-                break;
-            case "orangeButton":
-                CURRENT_BUTTON = 5;
-                break;
-        }
-        if (myWatcher == null || !myWatcher.isWatching()) {
-            myWatcher = new Watcher(CURRENT_BUTTON);
-            myWatcher.start();
+    private int yellowX = 0;
+    private int yellowY = 0;
+    private Game game;
 
+    @FXML
+    public void onRockClickMethod() throws AWTException {
+        if (!buttonRock.isDisable()) {
+            game = new Game(yellowX, yellowY);
+            game.launchGame();
+            disableSetupButton();
+            enableStopButton();
+            disableRockButton();
         }
+
     }
 
-    private AnimationTimer animationTimer = new AnimationTimer() {
-        @Override
-        public void handle(long now) {
-            updateCoordLables();
+    @FXML
+    public void onStopClickMethod() {
+        game.stopGame();
+        if (yellowX != 0) {
+            enableRockButton();
         }
-    };
-
-    private void updateCoordLables() {
-        switch (CURRENT_BUTTON) {
-            case 1:
-                buttonXY[0] = myWatcher.getX();
-                buttonXY[1] = myWatcher.getY();
-                greenCoordLayer.setText(buttonXY[0]+":"+buttonXY[1]);
-                break;
-            case 2:
-                buttonXY[2] = myWatcher.getX();
-                buttonXY[3] = myWatcher.getY();
-                redCoordLayer.setText(buttonXY[2]+":"+buttonXY[3]);
-                break;
-            case 3:
-                buttonXY[4] = myWatcher.getX();
-                buttonXY[5] = myWatcher.getY();
-                yellowCoordLayer.setText(buttonXY[4]+":"+buttonXY[5]);
-                setOtherButtonCoords();
-                break;
-            case 4:
-                buttonXY[6] = myWatcher.getX();
-                buttonXY[7] = myWatcher.getY();
-                blueCoordLayer.setText(buttonXY[6]+":"+buttonXY[7]);
-                break;
-            case 5:
-                buttonXY[8] = myWatcher.getX();
-                buttonXY[9] = myWatcher.getY();
-                orangeCoordLayer.setText(buttonXY[8]+":"+buttonXY[9]);
-                break;
-
-        }
-    }
-
-    private void setOtherButtonCoords() {
-        int x = myWatcher.getX();
-        int y = myWatcher.getY();
-
-        //green
-        buttonXY[0] = x-125;
-        buttonXY[1] = y-110;
-        greenCoordLayer.setText(buttonXY[0]+":"+buttonXY[1]);
-
-        //red
-        buttonXY[2] = x-60;
-        buttonXY[3] = y-110;
-        redCoordLayer.setText(buttonXY[2]+":"+buttonXY[3]);
-
-        //yellow
-        buttonXY[4] = x;
-        buttonXY[5] = y-110;
-        yellowCoordLayer.setText(buttonXY[4]+":"+buttonXY[5]);
-
-        //blue
-        buttonXY[6] = x+65;
-        buttonXY[7] = y-110;
-        blueCoordLayer.setText(buttonXY[6]+":"+buttonXY[7]);
-
-        //orange
-        buttonXY[8] = x+130;
-        buttonXY[9] = y-110;
-        orangeCoordLayer.setText(buttonXY[8]+":"+buttonXY[9]);
+        disableStopButton();
+        enableSetupButton();
     }
 
 
+    @FXML
+    public void onHelpClickMethod() {
+
+    }
+
+    @FXML
+    public void onSetupGameareaMethod() {
+        setUpGameAreaCoords();
+    }
+
+    private void setUpGameAreaCoords() {
+        Thread setUpGameAreaCoordsThread = new Thread(new Runnable() {
+            public int X;
+            public int Y;
+
+            public void run() {
+                String str = "processing";
+                coordsLabel.setText(str);
+
+                int[] xArray = {-1, -2, -3};
+                int[] yArray = {-1, -2, -3};
+
+                while (true) {
+
+                    if (Objects.equals(coordsLabel.getText(), "processing...")) {
+                        str = "processing";
+                    } else {
+                        str += ".";
+                    }
+                    coordsLabel.setText(str);
+
+
+                    PointerInfo pointer = MouseInfo.getPointerInfo();
+                    X = (int) pointer.getLocation().getX();
+                    Y = (int) pointer.getLocation().getY();
+
+                    if (xArray[0] == xArray[1] && xArray[0] == xArray[2] && yArray[0] == yArray[1] && yArray[0] == yArray[2]) {
+                        yellowX = xArray[0];
+                        yellowY = yArray[0];
+                        coordsLabel.setText(yellowX + ":" + yellowY);
+                        enableRockButton();
+                        break;
+                    } else {
+                        xArray[0] = xArray[1];
+                        yArray[0] = yArray[1];
+                        xArray[1] = xArray[2];
+                        yArray[1] = yArray[2];
+                        xArray[2] = X;
+                        yArray[2] = Y;
+                    }
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        setUpGameAreaCoordsThread.start();
+    }
+
+    private void enableRockButton() {
+        buttonRock.setDisable(false);
+    }
+
+    private void disableRockButton() {
+        buttonRock.setDisable(true);
+    }
+
+    private void enableSetupButton() {
+        buttonSetupGamearea.setDisable(false);
+    }
+
+    private void disableSetupButton() {
+        buttonSetupGamearea.setDisable(true);
+    }
+
+    private void enableStopButton() {
+        buttonStop.setDisable(false);
+    }
+
+    private void disableStopButton() {
+        buttonStop.setDisable(true);
+    }
 }
