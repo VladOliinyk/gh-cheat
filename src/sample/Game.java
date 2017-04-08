@@ -10,10 +10,13 @@ public class Game {
                                         0, 0,   //  6 7   blueX, blueY
                                         0, 0};  //  8 9   orangeX, orangeY
 
-
     private UltimateKeyPresser ultimateKeyPresser;
-    Game(int yellowX, int yellowY){
-        setOtherButtonCoords(yellowX, yellowY);
+    Game(int yellowX, int yellowY, boolean isMultiplayer){
+        if (!isMultiplayer) {
+            setOtherButtonCoords(yellowX, yellowY);
+        } else {
+            setOtherButtonCoordsToMultiplayer(yellowX, yellowY);
+        }
 
     }
 
@@ -21,7 +24,6 @@ public class Game {
         ultimateKeyPresser = new UltimateKeyPresser(buttonXY);
         ultimateKeyPresser.start();
     }
-
 
     public void stopGame() {
         ultimateKeyPresser.finish();
@@ -47,5 +49,27 @@ public class Game {
         //orange
         buttonXY[8] = x+130;
         buttonXY[9] = y-110;
+    }
+
+    private void setOtherButtonCoordsToMultiplayer(int x, int y) {
+        //green
+        buttonXY[0] = x-83;
+        buttonXY[1] = y-73;
+
+        //red
+        buttonXY[2] = x-41;
+        buttonXY[3] = y-73;
+
+        //yellow
+        buttonXY[4] = x;
+        buttonXY[5] = y-73;
+
+        //blue
+        buttonXY[6] = x+43;
+        buttonXY[7] = y-73;
+
+        //orange
+        buttonXY[8] = x+87;
+        buttonXY[9] = y-73;
     }
 }

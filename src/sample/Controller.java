@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
@@ -81,10 +82,17 @@ public class Controller {
     private int yellowY = 0;
     private Game game;
 
+
+    @FXML
+    private RadioButton isMultiplayerRadioBtn;
+
     @FXML
     public void onRockClickMethod() throws AWTException {
         if (!buttonRock.isDisable()) {
-            game = new Game(yellowX, yellowY);
+            boolean isMultiplayer;
+            isMultiplayer = isMultiplayerRadioBtn.isSelected();
+
+            game = new Game(yellowX, yellowY, isMultiplayer);
             game.launchGame();
             disableSetupButton();
             enableStopButton();
