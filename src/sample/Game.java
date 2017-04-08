@@ -24,7 +24,6 @@ public class Game {
 
 
     public void stopGame() {
-        System.out.println("stop");
         ultimateKeyPresser.finish();
     }
 
